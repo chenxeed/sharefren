@@ -1,0 +1,13 @@
+<h2>Friends</h2>
+<div>
+  <form [formGroup]="friendForm" (ngSubmit)="onSubmitFriendForm(friendForm.value)">
+    <label>Name</label>
+    <input formControlName="name" type="text" />
+    <button type="submit">Add</button>
+  </form>
+  <ul>
+    <li *ngFor="let friend of friends">
+      {{ friend.name }}
+    </li>
+  </ul>
+</div>
