@@ -50,8 +50,10 @@
             <ng-template #editItemSharer>
               <ul class="list-group">
                 <li *ngFor="let friend of friends" class="list-group-item">
-                  <input type="checkbox" [checked]="item.sharer_ids.includes(friend.id)" (change)="onChangeItemSharer(item.sharer_ids, friend.id, $event)" />
-                  {{ friend.name }}
+                  <label>
+                    <input type="checkbox" [checked]="item.sharer_ids.includes(friend.id)" (change)="onChangeItemSharer(item.sharer_ids, friend.id, $event)" />
+                    {{ friend.name }}                      
+                  </label>
                 </li>
               </ul>
             </ng-template>
