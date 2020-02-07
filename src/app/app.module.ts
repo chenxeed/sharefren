@@ -6,12 +6,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { IntroComponent } from './intro/intro.component';
+import { AbsPipe } from './abs.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    IntroComponent
+    IntroComponent,
+    AbsPipe
   ],
   imports: [
     BrowserModule,
@@ -21,4 +23,4 @@ import { IntroComponent } from './intro/intro.component';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
