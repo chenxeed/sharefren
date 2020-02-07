@@ -35,16 +35,31 @@
       <thead class="thead-light">
         <tr>
           <th scope="col">Name</th>
+          <th scope="col">Shared by</th>
           <th scope="col" class="text-right">Price</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let item of items">
           <td>{{ item.name }}</td>
+          <td>
+            <div *ngIf="editItemSharerId !== item.id; else editItemSharer">
+              {{ getFriendName(item.sharer_ids) }}
+              <button class="btn btn-primary" (click)="onEditItemSharer(item.id)">Edit</button>  
+            </div>
+            <ng-template #editItemSharer>
+              <ul class="list-group">
+                <li *ngFor="let friend of friends" class="list-group-item">
+                  <input type="checkbox" [checked]="item.sharer_ids.includes(friend.id)" (change)="onChangeItemSharer(item.sharer_ids, friend.id, $event)" />
+                  {{ friend.name }}
+                </li>
+              </ul>
+            </ng-template>
+          </td>
           <td class="text-right">{{ item.price }}</td>
         </tr>
         <tr class="table-primary">
-          <td>Total</td>
+          <td colspan="2">Total</td>
           <td class="text-right">{{ totalPrice }}</td>
         </tr>
       </tbody>

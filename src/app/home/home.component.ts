@@ -11,7 +11,8 @@ interface Friend {
 interface Item {
   id: string,
   name: string,
-  price: number
+  price: number,
+  sharer_ids: Friend['id'][]
 }
 
 interface Payer {
@@ -29,6 +30,7 @@ export class HomeComponent implements OnInit {
 
   // States
   friends: Friend[] = [];
+  friendById: Record<Friend['id'], Friend> = {};
   items: Item[] = [];
   payers: Payer[] = [];
 
@@ -42,6 +44,9 @@ export class HomeComponent implements OnInit {
   totalPaid = 0;
   paymentLeft = 0;
   isPaymentCompleted = false;
+
+  // UI State
+  editItemSharerId: Item['id'] = ''
 
   // FormGroup
   friendForm: FormGroup;
@@ -65,8 +70,14 @@ export class HomeComponent implements OnInit {
       payment: new FormControl('', Validators.required)
     })
 
-    // Subscribe
-    this.friends$.subscribe(friends => { this.friends = friends })
+    // Observe for state values
+    this.friends$.subscribe(friends => {
+      this.friends = friends
+      this.friendById = {}
+      friends.forEach(friend => {
+        this.friendById[friend.id] = friend
+      })
+    })
     this.items$.subscribe(items => { this.items = items })
     this.payers$.subscribe(payers => { this.payers = payers })
 
@@ -95,6 +106,10 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  getFriendName(friend_ids) {
+    return friend_ids.map(id => this.friendById[id].name).join(', ')
+  }
+
   onSubmitFriendForm(friendData) {
     const friend = {
       id: uuid(),
@@ -111,7 +126,8 @@ export class HomeComponent implements OnInit {
     const item = {
       id: uuid(),
       name: itemData.name,
-      price: parseFloat(itemData.price)
+      price: parseFloat(itemData.price),
+      sharer_ids: Object.keys(this.friendById)
     }
     this.items$.next([
       ...this.items,
@@ -131,6 +147,19 @@ export class HomeComponent implements OnInit {
       payer
     ])
     this.payerForm.reset()
+  }
+
+  onEditItemSharer(itemId) {
+    this.editItemSharerId = itemId
+  }
+
+  onChangeItemSharer(sharer_ids: Item['sharer_ids'], friendId: Friend['id'], event: InputEvent) {
+    const checked = (event.currentTarget as HTMLInputElement).checked
+    if (checked) {
+      sharer_ids.push(friendId)
+    } else {
+      sharer_ids.splice(sharer_ids.indexOf(friendId), 1)
+    }
   }
 
   ngOnInit() {
