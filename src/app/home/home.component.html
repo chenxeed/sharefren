@@ -86,7 +86,7 @@
     <div class="mt-3">
       <ul class="list-group">
         <li *ngFor="let payer of payers" class="list-group-item">
-          {{ payer.friendId }} - {{ payer.payment }}
+          {{ friendById[payer.payerId].name }} - {{ payer.payment }}
         </li>
       </ul>
     </div>
