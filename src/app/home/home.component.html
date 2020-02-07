@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-4">
+  <div class="col-3">
     <h2>Friends</h2>
     <form [formGroup]="friendForm" (ngSubmit)="onSubmitFriendForm(friendForm.value)">
       <div class="form-group">
@@ -18,7 +18,7 @@
     </div>
   </div>
 
-  <div class="col-4">
+  <div class="col-3">
     <h2>Items</h2>
     <form [formGroup]="itemForm" (ngSubmit)="onSubmitItemForm(itemForm.value)">
       <div class="form-group">
@@ -68,7 +68,7 @@
     </table>
   </div>
 
-  <div class="col-4">
+  <div class="col-3">
     <h2>Paid By</h2>
     <form [formGroup]="payerForm" (ngSubmit)="onSubmitPayerForm(payerForm.value)">
       <div class="form-group">
@@ -89,6 +89,25 @@
           {{ friendById[payer.payerId].name }} - {{ payer.payment }}
         </li>
       </ul>
+    </div>
+  </div>
+
+  <div class="col-3" *ngIf="isPaymentCompleted">
+    <h2>Settlement</h2>
+    <div class="mt-3">
+      <ul *ngIf="debts.length > 0; else nothingToSettle" class="list-group">
+        <li
+          *ngFor="let debt of debts"
+          class="list-group-item"
+          [ngClass]="debt.amount > 0 ? 'list-group-item-warning' : 'list-group-item-success'">
+          {{ friendById[debt.owerId].name }} is
+          {{ debt.amount > 0 ? 'owed' : 'owing' }}
+          {{ debt.amount | abs }}
+        </li>
+      </ul>
+      <ng-template #nothingToSettle>
+        All Clear!
+      </ng-template>
     </div>
   </div>
 </div>

@@ -21,6 +21,11 @@ interface Payer {
   payment: number
 }
 
+interface Debt {
+  owerId: Friend['id'],
+  amount: number
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -44,6 +49,7 @@ export class HomeComponent implements OnInit {
   totalPaid = 0;
   paymentLeft = 0;
   isPaymentCompleted = false;
+  debts: Debt[] = [];
 
   // UI State
   editItemSharerId: Item['id'] = ''
@@ -103,6 +109,33 @@ export class HomeComponent implements OnInit {
 
     const checkIsPaymentCompleted = () => {
       this.isPaymentCompleted = this.totalPrice <= 0 ? false : this.paymentLeft <= 0
+      updateDebts()
+    }
+
+    const updateDebts = () => {
+      this.debts = []
+      if (this.isPaymentCompleted) {
+        this.friends.forEach(friend => {
+
+          const sharedItems = this.items.filter(item => item.sharer_ids.includes(friend.id))
+          const sum = sharedItems.reduce((total, item) => {
+            const price = item.price
+            const sharerCount = item.sharer_ids.length
+            const sharedPrice = price / sharerCount
+            return total + sharedPrice
+          }, 0)
+
+          const paid = this.payers.filter(payer => payer.payerId === friend.id).reduce((total, payer) => total + payer.payment, 0)
+          const amount = sum - paid
+
+          if (amount != 0) {
+            this.debts.push({
+              owerId: friend.id,
+              amount
+            })  
+          }
+        })
+      }
     }
   }
 
@@ -153,13 +186,14 @@ export class HomeComponent implements OnInit {
     this.editItemSharerId = itemId
   }
 
-  onChangeItemSharer(sharer_ids: Item['sharer_ids'], friendId: Friend['id'], event: InputEvent) {
+  onChangeItemSharer(sharer_ids: Item['sharer_ids'], friendId: Friend['id'], event: Event) {
     const checked = (event.currentTarget as HTMLInputElement).checked
     if (checked) {
       sharer_ids.push(friendId)
     } else {
       sharer_ids.splice(sharer_ids.indexOf(friendId), 1)
     }
+    this.items$.next(this.items)
   }
 
   ngOnInit() {
