@@ -186,14 +186,19 @@ export class HomeComponent implements OnInit {
     this.editItemSharerId = itemId
   }
 
-  onChangeItemSharer(sharer_ids: Item['sharer_ids'], friendId: Friend['id'], event: Event) {
-    const checked = (event.currentTarget as HTMLInputElement).checked
-    if (checked) {
-      sharer_ids.push(friendId)
-    } else {
-      sharer_ids.splice(sharer_ids.indexOf(friendId), 1)
-    }
+  onSubmitItemSharer(event: Event) {
+    event.preventDefault()
+    const item = this.items.find(item => item.id === this.editItemSharerId)
+    const target = event.target as HTMLFormElement
+    const values = Array.from(target.elements)
+      .filter((elm: HTMLInputElement) => elm.checked)
+      .map((elm: HTMLInputElement) => elm.value)
+    
+    item.sharer_ids = values
+
     this.items$.next(this.items)
+
+    this.editItemSharerId = ""
   }
 
   ngOnInit() {
