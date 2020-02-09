@@ -1,1 +1,25 @@
 @import '~bootstrap/dist/css/bootstrap.min.css';
+@import '~bootstrap/scss/bootstrap.scss';
+
+.nav {
+  &.nav-steps {
+    .nav-item {
+      &:not(:first-child)::before {
+        content: " ";
+        width: 0.5rem;
+        height: 2px;
+        background: $black;
+        float: left;
+        margin-top: 20px;
+      }
+      &:not(:last-child)::after {
+        content: " ";
+        width: 0.5rem;
+        height: 2px;
+        background: $black;
+        float: right;
+        margin-top: -20px;
+      }
+    }
+  }
+}
