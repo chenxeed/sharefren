@@ -26,6 +26,13 @@ interface Debt {
   amount: number
 }
 
+const enum Steps {
+  FRIEND = 'friend',
+  ITEM = 'item',
+  PAYER = 'payer',
+  DEBT = 'debt'
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -52,6 +59,7 @@ export class HomeComponent implements OnInit {
   debts: Debt[] = [];
 
   // UI State
+  steps: Steps = Steps.DEBT
   editItemSharerId: Item['id'] = ''
 
   // FormGroup

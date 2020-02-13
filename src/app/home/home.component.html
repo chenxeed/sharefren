@@ -3,22 +3,22 @@
     <h2>Steps</h2>
     <ul class="nav justify-content-center nav-steps">
       <li class="nav-item active">
-        <a class="nav-link" href="#">Friends</a>
+        <a class="nav-link" href="#stepsFriend">Friends</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Items</a>
+        <a class="nav-link" [class.disabled]="friends.length < 1" href="#stepsItem">Items</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Payers</a>
+        <a class="nav-link" [class.disabled]="items.length < 1" href="#stepsPayer">Payers</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Settlement</a>
+        <a class="nav-link"[class.disabled]="debts.length < 1" href="#stepsSettlement">Settlement</a>
       </li>
     </ul>
   </div>
 </div>
 <div class="row">
-  <div class="col-xl-3">
+  <div id="stepsFriend" class="col-xl-3 mb-3">
     <h2>Friends</h2>
     <form [formGroup]="friendForm" (ngSubmit)="onSubmitFriendForm(friendForm.value)">
       <div class="form-group">
@@ -37,7 +37,7 @@
     </div>
   </div>
 
-  <div class="col-xl-3">
+  <div id="stepsItem" class="col-xl-3 mb-3"  *ngIf="friends.length > 0">
     <h2>Items</h2>
     <form [formGroup]="itemForm" (ngSubmit)="onSubmitItemForm(itemForm.value)">
       <div class="form-group">
@@ -90,7 +90,7 @@
     </table>
   </div>
 
-  <div class="col-xl-3">
+  <div id="stepsPayer" class="col-xl-3 mb-3" *ngIf="items.length > 0">
     <h2>Paid By</h2>
     <form [formGroup]="payerForm" (ngSubmit)="onSubmitPayerForm(payerForm.value)">
       <div class="form-group">
@@ -114,7 +114,7 @@
     </div>
   </div>
 
-  <div class="col-xl-3" *ngIf="isPaymentCompleted">
+  <div id="stepsSettlement" class="col-xl-3 mb-3" *ngIf="isPaymentCompleted">
     <h2>Settlement</h2>
     <div class="mt-3">
       <ul *ngIf="debts.length > 0; else nothingToSettle" class="list-group">
