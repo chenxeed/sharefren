@@ -4,14 +4,14 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
+import { FormComponent } from './form/form.component';
 import { IntroComponent } from './intro/intro.component';
 import { AbsPipe } from './abs.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
+    FormComponent,
     IntroComponent,
     AbsPipe
   ],

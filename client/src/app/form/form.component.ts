@@ -34,11 +34,11 @@ const enum Steps {
 }
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  selector: 'app-form',
+  templateUrl: './form.component.html',
+  styleUrls: ['./form.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class FormComponent implements OnInit {
 
   // States
   friends: Friend[] = [];
