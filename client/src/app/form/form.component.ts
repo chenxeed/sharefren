@@ -1,30 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { select, Store } from '@ngrx/store';
+import { Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import * as uuid from 'uuid';
-import { Subject } from 'rxjs';
-
-interface Friend {
-  id: string,
-  name: string
-}
-
-interface Item {
-  id: string,
-  name: string,
-  price: number,
-  sharer_ids: Friend['id'][]
-}
-
-interface Payer {
-  id: string,
-  payerId: Friend['id'],
-  payment: number
-}
-
-interface Debt {
-  owerId: Friend['id'],
-  amount: number
-}
+import { Subject, Observable } from 'rxjs';
+import { AddBill } from 'src/app/store/bill/actions';
+import { Friend, Item, Payer, Debt } from 'src/app/bill'
+import { Bill } from "src/app/bill";
 
 const enum Steps {
   FRIEND = 'friend',
@@ -41,6 +23,7 @@ const enum Steps {
 export class FormComponent implements OnInit {
 
   // States
+  bills$: Observable<Bill[]>;
   friends: Friend[] = [];
   friendById: Record<Friend['id'], Friend> = {};
   items: Item[] = [];
@@ -66,10 +49,15 @@ export class FormComponent implements OnInit {
   friendForm: FormGroup;
   itemForm: FormGroup;
   payerForm: FormGroup;
+  billForm: FormGroup;
 
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private store: Store<{ bills: Bill[] }>,
+    private router: Router
   ) {
+    this.bills$ = store.pipe(select('bills'))
+
     this.friendForm = this.formBuilder.group({
       name: new FormControl('', Validators.required)
     })
@@ -82,6 +70,10 @@ export class FormComponent implements OnInit {
     this.payerForm = this.formBuilder.group({
       payer: new FormControl('', Validators.required),
       payment: new FormControl('', Validators.required)
+    })
+
+    this.billForm = this.formBuilder.group({
+      name: new FormControl('', Validators.required)
     })
 
     // Observe for state values
@@ -139,7 +131,8 @@ export class FormComponent implements OnInit {
           if (amount != 0) {
             this.debts.push({
               owerId: friend.id,
-              amount
+              amount,
+              settled: false
             })  
           }
         })
@@ -207,6 +200,20 @@ export class FormComponent implements OnInit {
     this.items$.next(this.items)
 
     this.editItemSharerId = ""
+  }
+
+  onSubmitBillForm(billData) {
+    this.store.dispatch(AddBill({
+      payload: {
+        id: uuid(),
+        name: billData.name,
+        friends: this.friends,
+        items: this.items,
+        payers: this.payers,
+        debts: this.debts  
+      }
+    }))
+    this.router.navigate(['/'])
   }
 
   ngOnInit() {

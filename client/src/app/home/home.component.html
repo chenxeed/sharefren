@@ -1,0 +1,24 @@
+<div class="row">
+  <div class="col text-center">
+    <h2>Dashboard</h2>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <div>
+      <a routerLink="/create-bill">
+        <button class="btn btn-primary">Create</button>
+      </a>
+    </div>
+    <div class="mt-3">
+      <div *ngFor="let bill of bills$ | async" class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{ bill.name }}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">By {{ bill.friends | mapArray: 'name' }}</h6>
+          <p class="card-text">{{ bill.items | slice:0:5 | mapArray: 'name' }}</p>
+          <a href="#" class="card-link">Edit</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
