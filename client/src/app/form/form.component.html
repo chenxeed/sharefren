@@ -134,7 +134,7 @@
     <div class="mt-3">
       <form [formGroup]="billForm" (ngSubmit)="onSubmitBillForm(billForm.value)">
         <div class="input-group mb-3">
-          <input type="text" class="form-control" formControlName="name"  placeholder="Bill Name" aria-label="Bill Name">
+          <input type="text" class="form-control" formControlName="name"  placeholder="Bill Name" aria-label="Bill Name" [value]="billName">
           <div class="input-group-append">
             <button class="btn btn-primary" type="submit">Save Bill</button>
           </div>

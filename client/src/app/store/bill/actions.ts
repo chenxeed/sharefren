@@ -5,6 +5,7 @@ export enum ActionTypes {
   Load = 'LOAD_BILLS',
   Init = 'INIT_BILLS',
   Add = 'ADD_BILL',
+  Update = 'UPDATE_BILL',
   Remove = 'REMOVE_BILL'
 }
 
@@ -19,6 +20,11 @@ export const InitBills = createAction(
 
 export const AddBill = createAction(
   ActionTypes.Add,
+  props<{ payload: Bill }>()
+)
+
+export const UpdateBill = createAction(
+  ActionTypes.Update,
   props<{ payload: Bill }>()
 )
 

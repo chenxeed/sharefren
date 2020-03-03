@@ -16,7 +16,9 @@
           <h5 class="card-title">{{ bill.name }}</h5>
           <h6 class="card-subtitle mb-2 text-muted">By {{ bill.friends | mapArray: 'name' }}</h6>
           <p class="card-text">{{ bill.items | slice:0:5 | mapArray: 'name' }}</p>
-          <button class="btn btn-primary">Edit</button>
+          <a [routerLink]="'/update-bill/' + bill.id">
+            <button class="btn btn-primary">Edit</button>
+          </a>
           <button class="btn btn-danger" (click)="onClickRemoveBill(bill.id)">Remove</button>
         </div>
       </div>

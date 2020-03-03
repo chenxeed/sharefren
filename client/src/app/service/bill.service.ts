@@ -23,6 +23,19 @@ export class BillService {
     return Promise.resolve()
   }
 
+  update (updatedBill: Bill) {
+    const storedBills = this.getBills()
+    const updatedBills = storedBills.map(bill => {
+      if (updatedBill.id === bill.id) {
+        return updatedBill
+      } else {
+        return bill
+      }
+    })
+    localStorage.setItem(this.key, JSON.stringify(updatedBills))
+    return Promise.resolve()
+  }
+
   remove (billId: Bill['id']) {
     const storedBills = this.getBills()
     const removedIndex = storedBills.findIndex(bill => bill.id === billId)

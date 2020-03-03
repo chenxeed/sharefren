@@ -8,6 +8,7 @@ import { IntroComponent } from './intro/intro.component';
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'create-bill', component: FormComponent },
+  { path: 'update-bill/:billId', component: FormComponent },
   { path: 'intro', component: IntroComponent }
 ];
 

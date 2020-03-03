@@ -18,6 +18,17 @@ export const billReducer = createReducer(
         payload
       ]
   }),
+  on(actions.UpdateBill, (state, { payload }) => {
+    return [
+        ...state.map(bill => {
+          if (payload.id === bill.id) {
+            return payload
+          } else {
+            return bill
+          }
+        })
+      ]
+  }),
   on(actions.RemoveBill, (state, { payload }) => {
     return state.filter(bill => bill.id !== payload)
   })

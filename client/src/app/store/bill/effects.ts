@@ -24,11 +24,17 @@ export class BillEffects {
     ofType(ActionTypes.Add),
     map((action: any) => action.payload),
     tap(payload => this.billService.save(payload))
-  ))
+  ), { dispatch: false })
+
+  updateBill$ = createEffect(() => this.actions$.pipe(
+    ofType(ActionTypes.Update),
+    map((action: any) => action.payload),
+    tap(payload => this.billService.update(payload))
+  ), { dispatch: false })
 
   removeBill$ = createEffect(() => this.actions$.pipe(
     ofType(ActionTypes.Remove),
     map((action: any) => action.payload),
     tap(payload => this.billService.remove(payload))
-  ))
+  ), { dispatch: false })
 }
