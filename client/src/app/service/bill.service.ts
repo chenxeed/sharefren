@@ -23,6 +23,14 @@ export class BillService {
     return Promise.resolve()
   }
 
+  remove (billId: Bill['id']) {
+    const storedBills = this.getBills()
+    const removedIndex = storedBills.findIndex(bill => bill.id === billId)
+    storedBills.splice(removedIndex, 1)
+    localStorage.setItem(this.key, JSON.stringify(storedBills))
+    return Promise.resolve()
+  }
+
   private getBills () {
     const storedBills = localStorage.getItem(this.key)
     if (!storedBills) {

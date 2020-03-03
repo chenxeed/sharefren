@@ -3,7 +3,6 @@ import { ActionTypes, InitBills } from './actions';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { tap, map, mapTo, mergeMap } from 'rxjs/operators';
 import { BillService } from 'src/app/service/bill.service'
-import { Bill } from 'src/app/bill';
 import { from } from 'rxjs';
  
  
@@ -21,9 +20,15 @@ export class BillEffects {
     )
   ))
 
-  saveBill$ = createEffect(() => this.actions$.pipe(
+  addBill$ = createEffect(() => this.actions$.pipe(
     ofType(ActionTypes.Add),
     map((action: any) => action.payload),
     tap(payload => this.billService.save(payload))
+  ))
+
+  removeBill$ = createEffect(() => this.actions$.pipe(
+    ofType(ActionTypes.Remove),
+    map((action: any) => action.payload),
+    tap(payload => this.billService.remove(payload))
   ))
 }
