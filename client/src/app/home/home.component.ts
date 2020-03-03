@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { selectBills } from 'src/app/store/bill/reducer';
-import { RemoveBill } from 'src/app/store/bill/actions';
+import { LoadBills, RemoveBill } from 'src/app/store/bill/actions';
 import { Observable, from } from 'rxjs';
 import { Bill } from '../bill';
 
@@ -16,6 +15,8 @@ export class HomeComponent implements OnInit {
 
   constructor(store: Store<{ bills: [] }>) {
     this.bills$ = store.pipe(select('bills'))
+
+    store.dispatch(LoadBills())
   }
 
   ngOnInit() {

@@ -9,6 +9,9 @@ export const initialState: InitialState<State> = []
 
 export const billReducer = createReducer(
   initialState,
+  on(actions.InitBills, (_state, { payload }) => {
+    return payload
+  }),
   on(actions.AddBill, (state, { payload }) => {
     return [
         ...state,

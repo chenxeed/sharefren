@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment'; // Angular CLI environment
 
@@ -14,6 +15,7 @@ import { AbsPipe } from './pipe/abs.pipe';
 import { MapArrayPipe } from './pipe/map-array.pipe';
 
 import { billReducer } from './store/bill/reducer';
+import { BillEffects } from './store/bill/effects';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,8 @@ import { billReducer } from './store/bill/reducer';
     FormsModule,
     AppRoutingModule,
     StoreModule.forRoot({ bills: billReducer }),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    EffectsModule.forRoot([BillEffects])
   ],
   providers: [],
   bootstrap: [AppComponent]
