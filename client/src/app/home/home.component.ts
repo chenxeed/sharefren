@@ -11,16 +11,16 @@ import { Bill } from '../bill';
 })
 export class HomeComponent implements OnInit {
 
-  bills$: Observable<Bill[]>
+  bills$: Observable<Bill[]>;
 
   constructor(private store: Store<{ bills: [] }>) {
-    this.bills$ = store.pipe(select('bills'))
+    this.bills$ = store.pipe(select('bills'));
 
-    store.dispatch(LoadBills())
+    store.dispatch(LoadBills());
   }
 
   onClickRemoveBill(billId: Bill['id']) {
-    this.store.dispatch(RemoveBill({ payload: billId }))
+    this.store.dispatch(RemoveBill({ payload: billId }));
   }
 
   ngOnInit() {

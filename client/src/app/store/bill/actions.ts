@@ -1,5 +1,5 @@
-import { createAction, props } from '@ngrx/store'
-import { Bill } from 'src/app/bill'
+import { createAction, props } from '@ngrx/store';
+import { Bill } from 'src/app/bill';
 
 export enum ActionTypes {
   Load = 'LOAD_BILLS',
@@ -11,24 +11,24 @@ export enum ActionTypes {
 
 export const LoadBills = createAction(
   ActionTypes.Load
-)
+);
 
 export const InitBills = createAction(
   ActionTypes.Init,
   props<{ payload: Bill[] }>()
-)
+);
 
 export const AddBill = createAction(
   ActionTypes.Add,
   props<{ payload: Bill }>()
-)
+);
 
 export const UpdateBill = createAction(
   ActionTypes.Update,
   props<{ payload: Bill }>()
-)
+);
 
 export const RemoveBill = createAction(
   ActionTypes.Remove,
   props<{ payload: Bill['id'] }>()
-)
+);

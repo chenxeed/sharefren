@@ -6,52 +6,52 @@ import { Bill } from '../bill';
 })
 export class BillService {
 
-  key = 'shareFrenBills'
+  key = 'shareFrenBills';
 
-  constructor () {
-    this.getBills()
+  constructor() {
+    this.getBills();
   }
 
-  load () {
-    return Promise.resolve(this.getBills())
+  load() {
+    return Promise.resolve(this.getBills());
   }
 
-  save (newBill: Bill) {
-    const storedBills = this.getBills()
-    storedBills.push(newBill)
-    localStorage.setItem(this.key, JSON.stringify(storedBills))
-    return Promise.resolve()
+  save(newBill: Bill) {
+    const storedBills = this.getBills();
+    storedBills.push(newBill);
+    localStorage.setItem(this.key, JSON.stringify(storedBills));
+    return Promise.resolve();
   }
 
-  update (updatedBill: Bill) {
-    const storedBills = this.getBills()
+  update(updatedBill: Bill) {
+    const storedBills = this.getBills();
     const updatedBills = storedBills.map(bill => {
       if (updatedBill.id === bill.id) {
-        return updatedBill
+        return updatedBill;
       } else {
-        return bill
+        return bill;
       }
-    })
-    localStorage.setItem(this.key, JSON.stringify(updatedBills))
-    return Promise.resolve()
+    });
+    localStorage.setItem(this.key, JSON.stringify(updatedBills));
+    return Promise.resolve();
   }
 
-  remove (billId: Bill['id']) {
-    const storedBills = this.getBills()
-    const removedIndex = storedBills.findIndex(bill => bill.id === billId)
-    storedBills.splice(removedIndex, 1)
-    localStorage.setItem(this.key, JSON.stringify(storedBills))
-    return Promise.resolve()
+  remove(billId: Bill['id']) {
+    const storedBills = this.getBills();
+    const removedIndex = storedBills.findIndex(bill => bill.id === billId);
+    storedBills.splice(removedIndex, 1);
+    localStorage.setItem(this.key, JSON.stringify(storedBills));
+    return Promise.resolve();
   }
 
-  private getBills () {
-    const storedBills = localStorage.getItem(this.key)
+  private getBills() {
+    const storedBills = localStorage.getItem(this.key);
     if (!storedBills) {
-      const newBills: Bill[] = []
-      localStorage.setItem(this.key, JSON.stringify(newBills))
-      return newBills
+      const newBills: Bill[] = [];
+      localStorage.setItem(this.key, JSON.stringify(newBills));
+      return newBills;
     } else {
-      return JSON.parse(storedBills) as Bill[]
+      return JSON.parse(storedBills) as Bill[];
     }
   }
 }
