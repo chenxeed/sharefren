@@ -25,7 +25,6 @@ export class FormComponent implements OnInit {
 
   // States
   billId: Bill['id'] = '';
-  billName: Bill['name'] = '';
   bills$: Observable<Bill[]>;
   friends: Friend[] = [];
   friendById: Record<Friend['id'], Friend> = {};
@@ -246,8 +245,8 @@ export class FormComponent implements OnInit {
       this.items$.next(bill.items);
       this.payers$.next(bill.payers);
       this.debts = bill.debts;
-      this.billName = bill.name;
       this.billId = bill.id;
+      this.billForm.setValue({ name: bill.name })
     });
   }
 
