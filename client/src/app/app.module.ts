@@ -16,6 +16,7 @@ import { MapArrayPipe } from './pipe/map-array.pipe';
 
 import { billReducer } from './store/bill/reducer';
 import { BillEffects } from './store/bill/effects';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { BillEffects } from './store/bill/effects';
     AppRoutingModule,
     StoreModule.forRoot({ bills: billReducer }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    EffectsModule.forRoot([BillEffects])
+    EffectsModule.forRoot([BillEffects]),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [],
   bootstrap: [AppComponent]
