@@ -26,7 +26,8 @@ import { PrivacyComponent } from './privacy/privacy.component';
     FormComponent,
     IntroComponent,
     AbsPipe,
-    MapArrayPipe
+    MapArrayPipe,
+    PrivacyComponent
   ],
   imports: [
     BrowserModule,
