@@ -17,6 +17,7 @@ import { MapArrayPipe } from './pipe/map-array.pipe';
 import { billReducer } from './store/bill/reducer';
 import { BillEffects } from './store/bill/effects';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { PrivacyComponent } from './privacy/privacy.component';
 
 @NgModule({
   declarations: [

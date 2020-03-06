@@ -1,5 +1,5 @@
 import * as actions from './actions';
-import { Bill } from 'src/app/bill';
+import { Bill } from 'src/app/type/bill';
 import { InitialState, Action } from '@ngrx/store/src/models';
 import { createReducer, on } from '@ngrx/store';
 

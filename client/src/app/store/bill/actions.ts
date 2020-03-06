@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Bill } from 'src/app/bill';
+import { Bill } from 'src/app/type/bill';
 
 export enum ActionTypes {
   Load = 'LOAD_BILLS',

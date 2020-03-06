@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { LoadBills, RemoveBill } from 'src/app/store/bill/actions';
 import { Observable } from 'rxjs';
-import { Bill } from '../bill';
+import { Bill } from '../type/bill';
 
 @Component({
   selector: 'app-home',

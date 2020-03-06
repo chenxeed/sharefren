@@ -5,8 +5,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import * as uuid from 'uuid';
 import { Subject, Observable } from 'rxjs';
 import { AddBill, LoadBills, UpdateBill } from 'src/app/store/bill/actions';
-import { Friend, Item, Payer, Debt } from 'src/app/bill';
-import { Bill } from 'src/app/bill';
+import { Friend, Item, Payer, Debt } from 'src/app/type/bill';
+import { Bill } from 'src/app/type/bill';
 import { take } from 'rxjs/operators';
 
 const enum Steps {
