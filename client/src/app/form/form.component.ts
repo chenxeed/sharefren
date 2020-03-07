@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import * as uuid from 'uuid';
 import { Subject, Observable } from 'rxjs';
@@ -107,7 +107,9 @@ export class FormComponent implements OnInit {
     });
 
     const updatePaymentLeft = () => {
-      this.paymentLeft = this.totalPrice - this.totalPaid;
+      const paymentLeft = this.totalPrice - this.totalPaid;
+      this.paymentLeft = paymentLeft
+      this.payerForm.setValue({ payer: '', payment: paymentLeft })
       checkIsPaymentCompleted();
     };
 
@@ -148,23 +150,37 @@ export class FormComponent implements OnInit {
     return friend_ids.map(id => this.friendById[id].name).join(', ');
   }
 
-  onSubmitFriendForm(friendData) {
-    const friend = {
+  onSubmitFriendForm(friendData: { name: string }) {
+    const name = friendData.name.trim()
+    if (!name) {
+      return
+    }
+
+    const friendsInput = name.split(',').filter(name => name.trim());
+
+    const friends: Friend[] = friendsInput.map(name => ({
       id: uuid(),
-      name: friendData.name
-    };
+      name: name.trim()
+    }));
     this.friends$.next([
       ...this.friends,
-      friend
+      ...friends
     ]);
     this.friendForm.reset();
   }
 
-  onSubmitItemForm(itemData) {
+  onSubmitItemForm(itemData: { name: string, price: string }) {
+    const name = itemData.name.trim();
+    const price = parseFloat(itemData.price);
+
+    if (!name || !price || price < 0) {
+      return
+    }
+
     const item = {
       id: uuid(),
-      name: itemData.name,
-      price: parseFloat(itemData.price),
+      name,
+      price,
       sharer_ids: Object.keys(this.friendById)
     };
     this.items$.next([

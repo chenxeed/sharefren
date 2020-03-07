@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col text-center">
-    <h2>Steps</h2>
+    <h2>{{ billId ? 'Update Bill' : 'Create Bill' }}</h2>
     <ul class="nav justify-content-center nav-steps">
       <li class="nav-item active">
         <a class="nav-link" href="#stepsFriend">Friends</a>
@@ -23,7 +23,8 @@
     <form [formGroup]="friendForm" (ngSubmit)="onSubmitFriendForm(friendForm.value)">
       <div class="form-group">
         <label for="friendFormInputName">Friend Name</label>
-        <input id="friendFormInputName" class="form-control" formControlName="name" type="text" placeholder="Albert" />  
+        <input id="friendFormInputName" required class="form-control" aria-describedby="friendFormInputHelp" formControlName="name" type="text" placeholder="Albert" />  
+        <small id="friendFormInputHelp" class="form-text text-muted">Tips: Add more names separated by comma, ex: "Albert, Liana, etc"</small>
       </div>
       <button type="submit" class="btn btn-primary">Add</button>
     </form>
@@ -42,11 +43,11 @@
     <form [formGroup]="itemForm" (ngSubmit)="onSubmitItemForm(itemForm.value)">
       <div class="form-group">
         <label for="itemFormInputName">Item Name</label>
-        <input id="itemFormInputName" class="form-control" formControlName="name" type="text" placeholder="Cheese Pizza" />
+        <input id="itemFormInputName" class="form-control" formControlName="name" type="text" required />
       </div>
       <div class="form-group">
         <label for="itemFormInputPrice">Item Price</label>
-        <input id="itemFormInputPrice" class="form-control" formControlName="price" type="text" placeholder="150" />
+        <input id="itemFormInputPrice" class="form-control" formControlName="price" type="number" min="0" required />
       </div>
       <button type="submit" class="btn btn-primary">Add</button>
     </form>
