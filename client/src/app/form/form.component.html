@@ -122,9 +122,9 @@
           *ngFor="let debt of debts"
           class="list-group-item"
           [ngClass]="debt.amount > 0 ? 'list-group-item-warning' : 'list-group-item-success'">
-          {{ friendById[debt.owerId].name }} is
-          {{ debt.amount > 0 ? 'owed' : 'owing' }}
-          {{ debt.amount | abs | number:'1.2-2' }}
+          <b>{{ friendById[debt.owerId].name }}</b>
+          {{ debt.amount > 0 ? 'repay' : 'take back' }}
+          <b>{{ debt.amount | abs | number:'1.2-2' }}</b>
         </li>
       </ul>
       <ng-template #nothingToSettle>
