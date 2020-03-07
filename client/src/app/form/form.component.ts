@@ -226,6 +226,11 @@ export class FormComponent implements OnInit {
   }
 
   onSubmitBillForm(billData) {
+    const billName = billData.name.trim()
+    if (!billName) {
+      return
+    }
+
     const currentTime = new Date()
     const timestamp = currentTime.getTime()
     if (this.billId) {
@@ -233,7 +238,7 @@ export class FormComponent implements OnInit {
       this.store.dispatch(UpdateBill({
         payload: {
           id: this.billId,
-          name: billData.name,
+          name: billName,
           friends: this.friends,
           items: this.items,
           payers: this.payers,
@@ -248,7 +253,7 @@ export class FormComponent implements OnInit {
       this.store.dispatch(AddBill({
         payload: {
           id: uuid(),
-          name: billData.name,
+          name: billName,
           friends: this.friends,
           items: this.items,
           payers: this.payers,
