@@ -7,10 +7,10 @@
   <div class="col">
     <div>
       <a routerLink="/create-bill">
-        <button class="btn btn-primary">Create</button>
+        <button class="btn btn-primary">Create New Bill</button>
       </a>
     </div>
-    <div class="mt-3">
+    <div *ngIf="(bills$ | async).length; else noBill" class="mt-3">
       <div *ngFor="let bill of bills$ | async" class="card">
         <div class="card-body">
           <h5 class="card-title">{{ bill.name }}</h5>
@@ -23,5 +23,10 @@
         </div>
       </div>
     </div>
+    <ng-template #noBill>
+      <div class="mt-3 alert alert-primary" role="alert">
+        Create your <a routerLink="/create-bill" class="alert-link">first bill</a> to share with your fren!
+      </div>
+    </ng-template>
   </div>
 </div>
