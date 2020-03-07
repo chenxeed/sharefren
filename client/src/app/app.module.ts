@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { SocialLoginModule, AuthServiceConfig, GoogleLoginProvider } from 'angularx-social-login';
 import { environment } from '../environments/environment'; // Angular CLI environment
 
 import { AppRoutingModule } from './app-routing.module';
@@ -18,6 +19,17 @@ import { billReducer } from './store/bill/reducer';
 import { BillEffects } from './store/bill/effects';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { PrivacyComponent } from './privacy/privacy.component';
+
+const config = new AuthServiceConfig([
+  {
+    id: GoogleLoginProvider.PROVIDER_ID,
+    provider: new GoogleLoginProvider("47278097020-n74r30jur5c8p3p7bv5dh70outl2pho7.apps.googleusercontent.com")
+  }
+]);
+
+export function provideConfig() {
+  return config;
+}
 
 @NgModule({
   declarations: [
@@ -37,9 +49,15 @@ import { PrivacyComponent } from './privacy/privacy.component';
     StoreModule.forRoot({ bills: billReducer }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     EffectsModule.forRoot([BillEffects]),
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    SocialLoginModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: AuthServiceConfig,
+      useFactory: provideConfig
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

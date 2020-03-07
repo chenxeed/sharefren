@@ -1,6 +1,15 @@
 <div class="container-fluid">
-  <header class="flex border-bottom">
+  <header class="app-header d-flex justify-content-between align-items-center border-bottom">
     <a routerLink="/"><h3>ShareFren</h3></a>
+    <div *ngIf="loggedIn; else loginButton" class="d-flex">
+      <div>Hello, {{ user }}</div>
+      <div><button type="button" (click)="signOut()" class="btn btn-secondary btn-sm">Sign Outs</button></div>
+    </div>
+    <ng-template #loginButton>
+      <div>
+        <button type="button" (click)="signInWithGoogle()" class="btn btn-primary btn-sm">Sign In With Google</button>
+      </div>
+    </ng-template>
   </header>
   <router-outlet></router-outlet>
 
