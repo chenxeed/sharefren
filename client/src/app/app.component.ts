@@ -8,7 +8,7 @@ import { AuthService, GoogleLoginProvider, SocialUser } from 'angularx-social-lo
 })
 export class AppComponent {
   user: SocialUser;
-  loggedIn: boolean;
+  loggedIn: boolean = null;
 
   constructor(private authService: AuthService) { }
 

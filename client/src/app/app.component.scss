@@ -1,3 +1,19 @@
-.app-header {
-  height: 50px;
+// Variables
+$header-height: 50px;
+$footer-height: 50px;
+
+.header-container {
+  height: $header-height;
+}
+
+.header-user {
+  width: 300px;
+}
+
+.page-container {
+  min-height: calc(100vh - #{$header-height} - #{$footer-height});
+}
+
+.footer-container {
+  height: $footer-height;
 }
