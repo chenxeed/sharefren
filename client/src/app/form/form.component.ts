@@ -8,6 +8,7 @@ import { AddBill, LoadBills, UpdateBill } from 'src/app/store/bill/actions';
 import { Friend, Item, Payer, Debt } from 'src/app/type/bill';
 import { Bill } from 'src/app/type/bill';
 import { take } from 'rxjs/operators';
+import { SocialUser, AuthService } from 'angularx-social-login';
 
 const enum Steps {
   FRIEND = 'friend',
@@ -30,6 +31,7 @@ export class FormComponent implements OnInit {
   friendById: Record<Friend['id'], Friend> = {};
   items: Item[] = [];
   payers: Payer[] = [];
+  user?: SocialUser;
 
   // Observables
   friends$ = new Subject<Friend[]>();
@@ -57,7 +59,8 @@ export class FormComponent implements OnInit {
     private formBuilder: FormBuilder,
     private store: Store<{ bills: Bill[] }>,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authService: AuthService
   ) {
     this.bills$ = store.pipe(select('bills'));
     store.dispatch(LoadBills());
@@ -223,6 +226,8 @@ export class FormComponent implements OnInit {
   }
 
   onSubmitBillForm(billData) {
+    const currentTime = new Date()
+    const timestamp = currentTime.getTime()
     if (this.billId) {
       // update existing bill
       this.store.dispatch(UpdateBill({
@@ -232,12 +237,14 @@ export class FormComponent implements OnInit {
           friends: this.friends,
           items: this.items,
           payers: this.payers,
-          debts: this.debts
+          debts: this.debts,
+          updated: timestamp
         }
       }));
 
     } else {
       // create new
+      const userId = this.user && this.user.id
       this.store.dispatch(AddBill({
         payload: {
           id: uuid(),
@@ -245,7 +252,10 @@ export class FormComponent implements OnInit {
           friends: this.friends,
           items: this.items,
           payers: this.payers,
-          debts: this.debts
+          debts: this.debts,
+          userId: userId || '',
+          created: timestamp,
+          updated: timestamp
         }
       }));
     }
@@ -253,6 +263,10 @@ export class FormComponent implements OnInit {
   }
 
   ngOnInit() {
+    // Get the user
+    this.authService.authState.subscribe((user) => {
+      this.user = user;
+    });
     // Get the router
     const billId = this.route.snapshot.params.billId;
     this.store.pipe(select('bills')).pipe(take(1)).subscribe(bills => {

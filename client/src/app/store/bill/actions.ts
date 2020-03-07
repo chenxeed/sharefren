@@ -25,7 +25,7 @@ export const AddBill = createAction(
 
 export const UpdateBill = createAction(
   ActionTypes.Update,
-  props<{ payload: Bill }>()
+  props<{ payload: Omit<Bill, 'created'|'userId'> }>()
 );
 
 export const RemoveBill = createAction(
