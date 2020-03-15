@@ -6,6 +6,17 @@ export const environment = {
   production: false
 };
 
+// Your web app's Firebase configuration
+export const firebaseConfig = {
+  apiKey: "AIzaSyDjrxR8Ywemz2jgsM7JZ66hOSB43wmZpYg",
+  authDomain: "sharefren-dev.firebaseapp.com",
+  databaseURL: "https://sharefren-dev.firebaseio.com",
+  projectId: "sharefren-dev",
+  storageBucket: "sharefren-dev.appspot.com",
+  messagingSenderId: "823924468902",
+  appId: "1:823924468902:web:e2e700e89d51c13200d867"
+};
+
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.

@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "sharefren"
+  },
+  "targets": {
+    "sharefren": {
+      "hosting": {
+        "sharefren": [
+          "sharefren"
+        ]
+      }
+    }
+  }
+}

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { Bill } from '../type/bill';
 
 @Injectable({
@@ -8,7 +9,7 @@ export class BillService {
 
   key = 'shareFrenBills';
 
-  constructor() {
+  constructor(private firestore: AngularFirestore) {
     this.getBills();
   }
 
