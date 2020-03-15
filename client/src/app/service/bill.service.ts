@@ -17,7 +17,8 @@ export class BillService {
     return Promise.resolve(this.getBills());
   }
 
-  save(newBill: Bill) {
+  create(newBill: Bill) {
+
     const storedBills = this.getBills();
     storedBills.push(newBill);
     localStorage.setItem(this.key, JSON.stringify(storedBills));

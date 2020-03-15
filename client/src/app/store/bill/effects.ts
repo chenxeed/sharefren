@@ -23,7 +23,7 @@ export class BillEffects {
   addBill$ = createEffect(() => this.actions$.pipe(
     ofType(ActionTypes.Add),
     map((action: any) => action.payload),
-    tap(payload => this.billService.save(payload))
+    tap(payload => this.billService.create(payload))
   ), { dispatch: false });
 
   updateBill$ = createEffect(() => this.actions$.pipe(
