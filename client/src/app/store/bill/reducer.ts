@@ -9,7 +9,7 @@ export const initialState: InitialState<State> = [];
 
 const reducer = createReducer(
   initialState,
-  on(actions.InitBills, (_state, { payload }) => {
+  on(actions.ReadBills, (_state, { payload }) => {
     return payload;
   }),
   on(actions.AddBill, (state, { payload }) => {

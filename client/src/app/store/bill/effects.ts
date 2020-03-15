@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { ActionTypes, InitBills } from './actions';
+import { ActionTypes, ReadBills } from './actions';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { tap, map, mapTo, mergeMap } from 'rxjs/operators';
+import { tap, map, mergeMap } from 'rxjs/operators';
 import { BillService } from 'src/app/service/bill.service';
-import { from } from 'rxjs';
+import { Bill } from 'src/app/type/bill';
 
 
 @Injectable()
@@ -11,16 +11,18 @@ export class BillEffects {
 
   constructor(private actions$: Actions, private billService: BillService) {}
 
-  loadBill$ = createEffect(() => this.actions$.pipe(
+  readBill$ = createEffect(() => this.actions$.pipe(
     ofType(ActionTypes.Load),
-    mergeMap(() => from(this.billService.load())
-      .pipe(
-        map(bills => InitBills({ payload: bills }))
+    mergeMap(() => this.billService.read().pipe(
+        map(actions => {
+          const bills = actions.map(action => action.payload.doc.data())
+          return ReadBills({ payload: bills })
+        })
       )
     )
   ));
 
-  addBill$ = createEffect(() => this.actions$.pipe(
+  createBill$ = createEffect(() => this.actions$.pipe(
     ofType(ActionTypes.Add),
     map((action: any) => action.payload),
     tap(payload => this.billService.create(payload))

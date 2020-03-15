@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { Bill } from '../type/bill';
+import { AngularFirestore, DocumentReference } from '@angular/fire/firestore';
+import { Bill } from 'src/app/type/bill';
+import { Collection } from 'src/app/type/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -13,16 +14,17 @@ export class BillService {
     this.getBills();
   }
 
-  load() {
-    return Promise.resolve(this.getBills());
+  read() {
+    return this.firestore.collection<Bill>(Collection.Bills).snapshotChanges();
   }
 
   create(newBill: Bill) {
-
-    const storedBills = this.getBills();
-    storedBills.push(newBill);
-    localStorage.setItem(this.key, JSON.stringify(storedBills));
-    return Promise.resolve();
+    return new Promise<DocumentReference>((resolve, reject) =>{
+        this.firestore
+          .collection<Bill>(Collection.Bills)
+          .add(newBill)
+          .then(res => resolve(res), err => reject(err));
+    });
   }
 
   update(updatedBill: Bill) {

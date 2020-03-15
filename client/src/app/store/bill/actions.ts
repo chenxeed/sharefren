@@ -13,7 +13,7 @@ export const LoadBills = createAction(
   ActionTypes.Load
 );
 
-export const InitBills = createAction(
+export const ReadBills = createAction(
   ActionTypes.Init,
   props<{ payload: Bill[] }>()
 );
