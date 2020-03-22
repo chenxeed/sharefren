@@ -1,34 +1,46 @@
 import { createAction, props } from '@ngrx/store';
 import { Bill } from 'src/app/type/bill';
+import { CollectionBill } from 'src/app/type/firestore';
+import { Action } from 'rxjs/internal/scheduler/Action';
 
 export enum ActionTypes {
-  Load = 'LOAD_BILLS',
-  Init = 'INIT_BILLS',
-  Add = 'ADD_BILL',
-  Update = 'UPDATE_BILL',
-  Remove = 'REMOVE_BILL'
+  ReadByUserId = 'READ_BILLS_BY_USER_ID',
+  ReadByDocId = 'READ_BILL_BY_DOC_ID',
+  Create = 'CREATE_BILL',
+  UpdateByDocId = 'UPDATE_BILL_BY_DOC_ID',
+  DeleteyDocId = 'DELETE_BILL_BY_DOC_ID',
+  Mutate = 'MUTATE_BILLS'
 }
 
-export const LoadBills = createAction(
-  ActionTypes.Load
+export const ReadBillsByUserId = createAction(
+  ActionTypes.ReadByUserId,
+  props<{ userId: Bill['userId'] }>()
 );
 
-export const ReadBills = createAction(
-  ActionTypes.Init,
-  props<{ payload: Bill[] }>()
+export const ReadBillByDocId = createAction(
+  ActionTypes.ReadByDocId,
+  props<{ docId: CollectionBill['documentId'] }>()
 );
 
-export const AddBill = createAction(
-  ActionTypes.Add,
-  props<{ payload: Bill }>()
+export const CreateBill = createAction(
+  ActionTypes.Create,
+  props<{ bill: Bill }>()
 );
 
-export const UpdateBill = createAction(
-  ActionTypes.Update,
-  props<{ payload: Omit<Bill, 'created'|'userId'> }>()
+export const DeleteBillByDocId = createAction(
+  ActionTypes.DeleteyDocId,
+  props<{ payload: CollectionBill['documentId'] }>()
 );
 
-export const RemoveBill = createAction(
-  ActionTypes.Remove,
-  props<{ payload: Bill['id'] }>()
+export const MutateBills = createAction(
+  ActionTypes.Mutate,
+  props<{ payload: CollectionBill[] }>()
+)
+
+export const UpdateBillByDocId = createAction(
+  ActionTypes.UpdateByDocId,
+  props<{ payload: {
+    id: CollectionBill['documentId'],
+    bill: Omit<Bill, 'created'|'userId'>}
+  }>()
 );

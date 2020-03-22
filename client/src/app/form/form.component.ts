@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
+import { select, Store, State } from '@ngrx/store';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import * as uuid from 'uuid';
 import { Subject, Observable } from 'rxjs';
-import { AddBill, LoadBills, UpdateBill } from 'src/app/store/bill/actions';
+import { ReadBillByDocId } from 'src/app/store/bill/actions';
+import { State as BillState } from 'src/app/store/bill/reducer';
 import { Friend, Item, Payer, Debt } from 'src/app/type/bill';
-import { Bill } from 'src/app/type/bill';
-import { take } from 'rxjs/operators';
 import { SocialUser, AuthService } from 'angularx-social-login';
+import { CollectionBill } from '../type/firestore';
 
 const enum Steps {
   FRIEND = 'friend',
@@ -25,8 +25,8 @@ const enum Steps {
 export class FormComponent implements OnInit {
 
   // States
-  billId: Bill['id'] = '';
-  bills$: Observable<Bill[]>;
+  billId: CollectionBill['documentId'] = '';
+  bills$: Observable<BillState>;
   friends: Friend[] = [];
   friendById: Record<Friend['id'], Friend> = {};
   items: Item[] = [];
@@ -57,13 +57,12 @@ export class FormComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private store: Store<{ bills: Bill[] }>,
+    private store: Store<{ bills: BillState }>,
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService
   ) {
     this.bills$ = store.pipe(select('bills'));
-    store.dispatch(LoadBills());
 
     this.friendForm = this.formBuilder.group({
       name: new FormControl('', Validators.required)
@@ -233,55 +232,61 @@ export class FormComponent implements OnInit {
 
     const currentTime = new Date()
     const timestamp = currentTime.getTime()
-    if (this.billId) {
-      // update existing bill
-      this.store.dispatch(UpdateBill({
-        payload: {
-          id: this.billId,
-          name: billName,
-          friends: this.friends,
-          items: this.items,
-          payers: this.payers,
-          debts: this.debts,
-          updated: timestamp
-        }
-      }));
+    // if (this.billId) {
+    //   // update existing bill
+    //   this.store.dispatch(UpdateBill({
+    //     payload: {
+    //       id: this.billId,
+    //       name: billName,
+    //       friends: this.friends,
+    //       items: this.items,
+    //       payers: this.payers,
+    //       debts: this.debts,
+    //       updated: timestamp
+    //     }
+    //   }));
 
-    } else {
-      // create new
-      const userId = this.user && this.user.id
-      this.store.dispatch(AddBill({
-        payload: {
-          id: uuid(),
-          name: billName,
-          friends: this.friends,
-          items: this.items,
-          payers: this.payers,
-          debts: this.debts,
-          userId: userId || '',
-          created: timestamp,
-          updated: timestamp
-        }
-      }));
-    }
+    // } else {
+    //   // create new
+    //   const userId = this.user && this.user.id
+    //   this.store.dispatch(AddBill({
+    //     payload: {
+    //       id: uuid(),
+    //       name: billName,
+    //       friends: this.friends,
+    //       items: this.items,
+    //       payers: this.payers,
+    //       debts: this.debts,
+    //       userId: userId || '',
+    //       created: timestamp,
+    //       updated: timestamp
+    //     }
+    //   }));
+    // }
     this.router.navigate(['/']);
   }
 
   ngOnInit() {
+    // Get the router
+    const billId = this.route.snapshot.params.billId;
+
     // Get the user
     this.authService.authState.subscribe((user) => {
       this.user = user;
+
+      this.store.dispatch(ReadBillByDocId({ docId: billId }));
     });
-    // Get the router
-    const billId = this.route.snapshot.params.billId;
-    this.store.pipe(select('bills')).pipe(take(1)).subscribe(bills => {
-      const bill = bills.find(b => b.id === billId);
-      this.friends$.next(bill.friends);
-      this.items$.next(bill.items);
-      this.payers$.next(bill.payers);
-      this.debts = bill.debts;
-      this.billId = bill.id;
-      this.billForm.setValue({ name: bill.name })
+
+    this.store.pipe(select('bills')).subscribe(bills => {
+      const bill = bills[0];
+      if (bill.documentId === billId) {
+        const billDoc = bill.doc
+        this.friends$.next(billDoc.friends);
+        this.items$.next(billDoc.items);
+        this.payers$.next(billDoc.payers);
+        this.debts = billDoc.debts;
+        this.billForm.setValue({ name: billDoc.name })  
+      }
     });
   }
 
