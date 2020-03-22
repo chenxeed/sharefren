@@ -4,9 +4,9 @@ import { NgModule } from '@angular/core';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { SocialLoginModule, AuthServiceConfig, GoogleLoginProvider } from 'angularx-social-login';
 import { AngularFireModule } from "@angular/fire";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
+import { AngularFireAuthModule } from '@angular/fire/auth';
 
 import { environment, firebaseConfig } from '../environments/environment'; // Angular CLI environment
 
@@ -22,17 +22,7 @@ import { billReducer } from './store/bill/reducer';
 import { BillEffects } from './store/bill/effects';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { PrivacyComponent } from './privacy/privacy.component';
-
-const config = new AuthServiceConfig([
-  {
-    id: GoogleLoginProvider.PROVIDER_ID,
-    provider: new GoogleLoginProvider("47278097020-n74r30jur5c8p3p7bv5dh70outl2pho7.apps.googleusercontent.com")
-  }
-]);
-
-export function provideConfig() {
-  return config;
-}
+import { AuthService } from './service/auth/auth.service';
 
 @NgModule({
   declarations: [
@@ -53,16 +43,11 @@ export function provideConfig() {
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     EffectsModule.forRoot([BillEffects]),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
-    SocialLoginModule,
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    AngularFireAuthModule
   ],
-  providers: [
-    {
-      provide: AuthServiceConfig,
-      useFactory: provideConfig
-    }
-  ],
+  providers: [AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

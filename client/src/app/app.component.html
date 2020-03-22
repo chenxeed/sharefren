@@ -2,7 +2,7 @@
   <a routerLink="/"><h3>ShareFren</h3></a>
   <div class="header-user">
     <div *ngIf="loggedIn === true; else loginButton" class="d-flex justify-content-between align-items-center">
-      <div>Hello, {{ user.firstName }}!</div>
+      <div>Hello, {{ user.displayName }}!</div>
       <div><button type="button" (click)="signOut()" class="btn btn-secondary btn-sm">Sign Out</button></div>
     </div>
     <ng-template #loginButton>

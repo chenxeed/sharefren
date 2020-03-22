@@ -7,8 +7,8 @@ import { Subject, Observable } from 'rxjs';
 import { ReadBillByDocId } from 'src/app/store/bill/actions';
 import { State as BillState } from 'src/app/store/bill/reducer';
 import { Friend, Item, Payer, Debt } from 'src/app/type/bill';
-import { SocialUser, AuthService } from 'angularx-social-login';
 import { CollectionBill } from '../type/firestore';
+import { AuthService } from '../service/auth/auth.service';
 
 const enum Steps {
   FRIEND = 'friend',
@@ -31,7 +31,7 @@ export class FormComponent implements OnInit {
   friendById: Record<Friend['id'], Friend> = {};
   items: Item[] = [];
   payers: Payer[] = [];
-  user?: SocialUser;
+  user?: firebase.User;
 
   // Observables
   friends$ = new Subject<Friend[]>();
@@ -271,7 +271,7 @@ export class FormComponent implements OnInit {
     const billId = this.route.snapshot.params.billId;
 
     // Get the user
-    this.authService.authState.subscribe((user) => {
+    this.authService.user$.subscribe((user) => {
       this.user = user;
       this.store.dispatch(ReadBillByDocId({ docId: billId }));
     });

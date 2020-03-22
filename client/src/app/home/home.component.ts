@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { AuthService } from 'angularx-social-login';
 import { ReadBillsByUserId } from 'src/app/store/bill/actions';
 import { State } from 'src/app/store/bill/reducer';
 import { Observable } from 'rxjs';
-import { CollectionBill } from '../type/firestore';
+import { AuthService } from '../service/auth/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -24,8 +23,8 @@ export class HomeComponent implements OnInit {
   // }
 
   ngOnInit() {
-    this.authService.authState.subscribe((user) => {
-      this.store.dispatch(ReadBillsByUserId({ userId: user && user.id }));
+    this.authService.user$.subscribe((user) => {
+      this.store.dispatch(ReadBillsByUserId({ userId: user && user.uid }));
     });
   }
 

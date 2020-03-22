@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthService, GoogleLoginProvider, SocialUser } from 'angularx-social-login';
+import { AuthService } from 'src/app/service/auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -7,23 +7,23 @@ import { AuthService, GoogleLoginProvider, SocialUser } from 'angularx-social-lo
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  user: SocialUser;
+  user: firebase.User;
   loggedIn: boolean = null;
 
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
-    this.authService.authState.subscribe((user) => {
+    this.authService.user$.subscribe(user => {
       this.user = user;
-      this.loggedIn = (user != null);
+      this.loggedIn = user && !user.isAnonymous
     });
   }
 
   signInWithGoogle(): void {
-    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+    this.authService.loginByGoogle();
   }
   
   signOut(): void {
-    this.authService.signOut();
+    this.authService.logout();
   }
 }

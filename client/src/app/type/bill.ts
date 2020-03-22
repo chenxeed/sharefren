@@ -1,12 +1,10 @@
-import { SocialUser } from 'angularx-social-login';
-
 export interface Bill {
   name: string;
   friends: Friend[];
   items: Item[];
   payers: Payer[];
   debts: Debt[];
-  userId: SocialUser['id'];
+  userId: string;
   created: number;
   updated: number;
 }
