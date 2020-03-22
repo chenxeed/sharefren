@@ -273,19 +273,20 @@ export class FormComponent implements OnInit {
     // Get the user
     this.authService.authState.subscribe((user) => {
       this.user = user;
-
       this.store.dispatch(ReadBillByDocId({ docId: billId }));
     });
 
-    this.store.pipe(select('bills')).subscribe(bills => {
-      const bill = bills[0];
-      if (bill.documentId === billId) {
-        const billDoc = bill.doc
-        this.friends$.next(billDoc.friends);
-        this.items$.next(billDoc.items);
-        this.payers$.next(billDoc.payers);
-        this.debts = billDoc.debts;
-        this.billForm.setValue({ name: billDoc.name })  
+    this.bills$.subscribe(bills => {
+      if (bills.length === 1) {
+        const bill = bills[0];
+        if (bill.documentId === billId) {
+          const billDoc = bill.doc
+          this.friends$.next(billDoc.friends);
+          this.items$.next(billDoc.items);
+          this.payers$.next(billDoc.payers);
+          this.debts = billDoc.debts;
+          this.billForm.setValue({ name: billDoc.name })  
+        }
       }
     });
   }
