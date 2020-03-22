@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { select, Store, State } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import * as uuid from 'uuid';
 import { Subject, Observable } from 'rxjs';
-import { ReadBillByDocId } from 'src/app/store/bill/actions';
+import { ReadBillByDocId, CreateBill } from 'src/app/store/bill/actions';
 import { State as BillState } from 'src/app/store/bill/reducer';
 import { Friend, Item, Payer, Debt } from 'src/app/type/bill';
 import { CollectionBill } from '../type/firestore';
@@ -232,37 +232,38 @@ export class FormComponent implements OnInit {
 
     const currentTime = new Date()
     const timestamp = currentTime.getTime()
-    // if (this.billId) {
-    //   // update existing bill
-    //   this.store.dispatch(UpdateBill({
-    //     payload: {
-    //       id: this.billId,
-    //       name: billName,
-    //       friends: this.friends,
-    //       items: this.items,
-    //       payers: this.payers,
-    //       debts: this.debts,
-    //       updated: timestamp
-    //     }
-    //   }));
+    if (this.billId) {
+      // update existing bill
+      // this.store.dispatch(UpdateBill({
+      //   payload: {
+      //     id: this.billId,
+      //     name: billName,
+      //     friends: this.friends,
+      //     items: this.items,
+      //     payers: this.payers,
+      //     debts: this.debts,
+      //     updated: timestamp
+      //   }
+      // }));
 
-    // } else {
-    //   // create new
-    //   const userId = this.user && this.user.id
-    //   this.store.dispatch(AddBill({
-    //     payload: {
-    //       id: uuid(),
-    //       name: billName,
-    //       friends: this.friends,
-    //       items: this.items,
-    //       payers: this.payers,
-    //       debts: this.debts,
-    //       userId: userId || '',
-    //       created: timestamp,
-    //       updated: timestamp
-    //     }
-    //   }));
-    // }
+    } else {
+      // create new
+      const userId = this.user && this.user.uid
+      if (userId) {
+        this.store.dispatch(CreateBill({
+          bill: {
+            name: billName,
+            friends: this.friends,
+            items: this.items,
+            payers: this.payers,
+            debts: this.debts,
+            userId: userId,
+            created: timestamp,
+            updated: timestamp
+          }
+        }));  
+      }
+    }
     this.router.navigate(['/']);
   }
 
@@ -273,7 +274,9 @@ export class FormComponent implements OnInit {
     // Get the user
     this.authService.user$.subscribe((user) => {
       this.user = user;
-      this.store.dispatch(ReadBillByDocId({ docId: billId }));
+      if (billId) {
+        this.store.dispatch(ReadBillByDocId({ docId: billId }));
+      }
     });
 
     this.bills$.subscribe(bills => {
