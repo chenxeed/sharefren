@@ -44,7 +44,7 @@ import { AuthService } from './service/auth/auth.service';
     EffectsModule.forRoot([BillEffects]),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFirestoreModule,
+    AngularFirestoreModule.enablePersistence(),
     AngularFireAuthModule
   ],
   providers: [AuthService],
