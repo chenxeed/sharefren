@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { ReadBillsByUserId } from 'src/app/store/bill/actions';
+import { ReadBillsByUserId, DeleteBillByDocId } from 'src/app/store/bill/actions';
 import { State } from 'src/app/store/bill/reducer';
 import { Observable } from 'rxjs';
 import { AuthService } from '../service/auth/auth.service';
+import { CollectionBill } from '../type/firestore';
 
 @Component({
   selector: 'app-home',
@@ -18,9 +19,9 @@ export class HomeComponent implements OnInit {
     this.bills$ = store.pipe(select('bills'));
   }
 
-  // onClickRemoveBill(billId: Bill['id']) {
-  //   this.store.dispatch(ReadBillsByUserId({ payload: billId }));
-  // }
+  onClickRemoveBill(billId: CollectionBill['documentId']) {
+    this.store.dispatch(DeleteBillByDocId({ docId: billId }));
+  }
 
   ngOnInit() {
     this.authService.user$.subscribe((user) => {

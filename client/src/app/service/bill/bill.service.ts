@@ -61,11 +61,10 @@ export class BillService {
       .set(updatedBill, { merge: true })
   }
 
-  delete(billId: CollectionBill['documentId']) {
-    // const storedBills = this.getBills();
-    // const removedIndex = storedBills.findIndex(bill => bill.id === billId);
-    // storedBills.splice(removedIndex, 1);
-    // localStorage.setItem(this.key, JSON.stringify(storedBills));
-    // return Promise.resolve();
+  deleteByDocId(documentId: CollectionBill['documentId']) {
+    return this.firestore
+      .collection<Bill>(CollectionName.Bills)
+      .doc(documentId)
+      .delete()
   }
 }

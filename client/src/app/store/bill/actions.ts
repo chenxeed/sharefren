@@ -29,7 +29,7 @@ export const CreateBill = createAction(
 
 export const DeleteBillByDocId = createAction(
   ActionTypes.DeleteyDocId,
-  props<{ payload: CollectionBill['documentId'] }>()
+  props<{ docId: CollectionBill['documentId'] }>()
 );
 
 export const MutateBills = createAction(

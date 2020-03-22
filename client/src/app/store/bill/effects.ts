@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActionTypes, MutateBills, ReadBillsByUserId, CreateBill, ReadBillByDocId, UpdateBillByDocId } from './actions';
+import { MutateBills, ReadBillsByUserId, CreateBill, ReadBillByDocId, UpdateBillByDocId, DeleteBillByDocId } from './actions';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { tap, map, mergeMap } from 'rxjs/operators';
 import { BillService } from 'src/app/service/bill/bill.service';
@@ -40,9 +40,8 @@ export class BillEffects {
     tap(payload => this.billService.updateByDocId(payload.id, payload.bill))
   ), { dispatch: false });
 
-  // removeBill$ = createEffect(() => this.actions$.pipe(
-  //   ofType(ActionTypes.Remove),
-  //   map((action: any) => action.payload),
-  //   tap(payload => this.billService.remove(payload))
-  // ), { dispatch: false });
+  deleteBill$ = createEffect(() => this.actions$.pipe(
+    ofType(DeleteBillByDocId),
+    tap(payload => this.billService.deleteByDocId(payload.docId))
+  ), { dispatch: false });
 }

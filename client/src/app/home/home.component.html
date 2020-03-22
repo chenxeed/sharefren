@@ -23,7 +23,7 @@
           </p>
           <div class="btn-group" role="group" aria-label="Card Option">
             <button [routerLink]="'/update-bill/' + bill.documentId" class="btn btn-primary">Edit</button>
-            <button class="btn btn-danger" (click)="onClickRemoveBill(bill.id)">Remove</button>
+            <button class="btn btn-danger" (click)="onClickRemoveBill(bill.documentId)">Remove</button>
           </div>
         </div>
       </div>
