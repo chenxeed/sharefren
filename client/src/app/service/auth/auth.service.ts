@@ -13,18 +13,20 @@ export class AuthService {
 
   constructor(private _firebaseAuth: AngularFireAuth) {
     this.user$ = _firebaseAuth.authState;
-    this.user$.subscribe(user => {
+    this.user$.subscribe(async user => {
       if (user) {
         this.userDetails = user;
       }
       else {
         this.userDetails = null;
+        await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
         _firebaseAuth.auth.signInAnonymously();
       }
     });
   }
 
-  loginByGoogle () {
+  async loginByGoogle () {
+    await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
     return this._firebaseAuth.auth.signInWithPopup(
       new firebase.auth.GoogleAuthProvider()
     )
