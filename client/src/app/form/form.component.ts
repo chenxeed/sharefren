@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import * as uuid from 'uuid';
 import { Subject, Observable } from 'rxjs';
-import { ReadBillByDocId, CreateBill } from 'src/app/store/bill/actions';
+import { ReadBillByDocId, CreateBill, UpdateBillByDocId } from 'src/app/store/bill/actions';
 import { State as BillState } from 'src/app/store/bill/reducer';
 import { Friend, Item, Payer, Debt } from 'src/app/type/bill';
 import { CollectionBill } from '../type/firestore';
@@ -234,17 +234,17 @@ export class FormComponent implements OnInit {
     const timestamp = currentTime.getTime()
     if (this.billId) {
       // update existing bill
-      // this.store.dispatch(UpdateBill({
-      //   payload: {
-      //     id: this.billId,
-      //     name: billName,
-      //     friends: this.friends,
-      //     items: this.items,
-      //     payers: this.payers,
-      //     debts: this.debts,
-      //     updated: timestamp
-      //   }
-      // }));
+      this.store.dispatch(UpdateBillByDocId({
+        id: this.billId,
+        bill: {
+          name: billName,
+          friends: this.friends,
+          items: this.items,
+          payers: this.payers,
+          debts: this.debts,
+          updated: timestamp  
+        }
+      }));
 
     } else {
       // create new
@@ -269,20 +269,20 @@ export class FormComponent implements OnInit {
 
   ngOnInit() {
     // Get the router
-    const billId = this.route.snapshot.params.billId;
+    this.billId = this.route.snapshot.params.billId;
 
     // Get the user
     this.authService.user$.subscribe((user) => {
       this.user = user;
-      if (billId) {
-        this.store.dispatch(ReadBillByDocId({ docId: billId }));
+      if (this.billId) {
+        this.store.dispatch(ReadBillByDocId({ docId: this.billId   }));
       }
     });
 
     this.bills$.subscribe(bills => {
       if (bills.length === 1) {
         const bill = bills[0];
-        if (bill.documentId === billId) {
+        if (bill.documentId === this.billId) {
           const billDoc = bill.doc
           this.friends$.next(billDoc.friends);
           this.items$.next(billDoc.items);

@@ -54,23 +54,11 @@ export class BillService {
     });
   }
 
-  update(documentId: CollectionBill['documentId'], updatedBill: Bill) {
-
-    // return this.firestore
-    //   .collection<Bill>(CollectionName.Bills)
-    //   .doc(documentId)
-
-
-    // const storedBills = this.getBills();
-    // const updatedBills = storedBills.map(bill => {
-    //   if (updatedBill.id === bill.id) {
-    //     return updatedBill;
-    //   } else {
-    //     return bill;
-    //   }
-    // });
-    // localStorage.setItem(this.key, JSON.stringify(updatedBills));
-    // return Promise.resolve();
+  updateByDocId(documentId: CollectionBill['documentId'], updatedBill: Pick<Bill, 'name'|'items'|'friends'|'payers'|'debts'|'updated'>) {
+    return this.firestore
+      .collection<Bill>(CollectionName.Bills)
+      .doc(documentId)
+      .set(updatedBill, { merge: true })
   }
 
   delete(billId: CollectionBill['documentId']) {

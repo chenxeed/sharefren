@@ -39,8 +39,8 @@ export const MutateBills = createAction(
 
 export const UpdateBillByDocId = createAction(
   ActionTypes.UpdateByDocId,
-  props<{ payload: {
+  props<{
     id: CollectionBill['documentId'],
-    bill: Omit<Bill, 'created'|'userId'>}
+    bill: Pick<Bill, 'name'|'items'|'friends'|'payers'|'debts'|'updated'>
   }>()
 );
